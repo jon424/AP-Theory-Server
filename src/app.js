@@ -3,12 +3,13 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser')
 const morgan = require('morgan');
-const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
 const { NODE_ENV } = require('./config');
 const winston = require('winston');
 const { pool } = require('./config');
+const cors = require('cors');
+const {CLIENT_ORIGIN} = require('./config');
 
 // const knex = require('knex');
 // const knexInstance = knex({
@@ -53,11 +54,16 @@ const morganOption = (NODE_ENV === 'production')
 app.use(morgan(morganOption));
 app.use(helmet());
 app.use(compression());
-app.use(cors());
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 
+
+app.use(
+    cors({
+        origin: CLIENT_ORIGIN
+    })
+);
 
 //Authorization Middleware
 // app.use(function validateBearerToken(req, res, next) {

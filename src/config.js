@@ -12,6 +12,7 @@ const pool = new Pool({
 
 module.exports = {
   pool,
+  CLIENT_ORIGIN: process.env.CLIENT_ORIGIN || 'https://new-ap-theory-client.now.sh', 
   PORT: process.env.PORT || 8000,
   NODE_ENV: process.env.NODE_ENV || 'development',
   DB_URL: process.env.DB_URL || 'postgresql://postgres@localhost/comments',
