@@ -1,28 +1,19 @@
-# Express Boilerplate!
+##AP Theory
 
-This is a boilerplate project used for starting new projects!
+A guide for Advanced Placement Music Theory class! Contains Topic Overviews and graded practice Quizzes to help you succeed on the AP Music Theory Exam. Utilizes React, Express, and PostgreSQL.
 
-## Set up
+###A live link of the project is available here: _____
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+###Screenshot
+![Alt text](./Topic/TopicAttachments/ap-theory-screenshot.png?raw=true "AP Theory Homepage")
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
 
 ## Scripts
 
-Start the application `npm start`
-
-Start nodemon for the application `npm run dev`
+Start ap-theory server using `npm run dev`
 
 Run the tests `npm test`
 
-## Additional Info
-see checkpoint 7 of Server-side programming with Node and Postgres for additional info about this boilerplate!
 
 ## Deploying
 

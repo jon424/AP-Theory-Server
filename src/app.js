@@ -17,10 +17,10 @@ const { pool } = require('./config');
 // });
 
 // const q1 = knexInstance('user_comments').select('*').toQuery()
-// console.log('q1:', q1)
+
 
 // knexInstance.from('user_comments').select('*').then(result => {
-//   console.log(result)
+
 // });
 
 
@@ -41,7 +41,9 @@ if (NODE_ENV !== 'production') {
 //...end of winston setup
 
 const app = express();
-app.use(morgan('dev'));
+
+const morganSetting = process.env.NODE_ENV === 'production' ? 'tiny' : 'common'
+app.use(morgan(morganSetting))
 app.use(express.json());
 
 const morganOption = (NODE_ENV === 'production')
@@ -73,14 +75,14 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 //*****API Requests For Comments Section*****/
 const getComments = (request, response) => {
-  console.log('getcomments')
+ 
   pool.query('SELECT * FROM user_comments ORDER BY date DESC', (error, results) => {
     
     if (error) {
       throw error
     }
     response.status(200).json(results.rows)
-    console.log('results from getComments' + results)
+   
   })
 }
 
