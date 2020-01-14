@@ -13,7 +13,7 @@ describe('Comments Endpoints', function () {
   before('make knex instance', () => {
     db = knex({
       client: 'pg',
-      connection: process.env.TEST_DB_URL,
+      connection: process.env.DB_URL, //process.env.TEST_DB_URL,
     })
     app.set('db', db)
   })
@@ -33,33 +33,34 @@ describe('Comments Endpoints', function () {
       )
     )
 
-    it(`responds 401 'Unauthorized request' when invalid password`, () => {
-      const userInvalidPass = { user_name: testUsers[0].user_name, password: 'wrong' }
-      return supertest(app)
-        .post('/api/comments')
-        .set('Authorization', helpers.makeAuthHeader(userInvalidPass))
-        .expect(401, { error: `Unauthorized request` })
-    })
+    // it(`responds 401 'Unauthorized request' when invalid password`, () => {
+    //   const userInvalidPass = { user_name: testUsers[0].user_name, password: 'wrong' }
+    //   return supertest(app)
+    //     .post('/api/comments')
+    //     .set('Authorization', helpers.makeAuthHeader(userInvalidPass))
+    //     .expect(401, { error: `Unauthorized request` })
+    // })
 
 
     it(`creates an comment, responding with 201 and the new comment`, function () {
       this.retries(3)
-      const testArticle = testArticles[0]
-      const testUser = testUsers[0]
+      //const testArticle = testArticles[0]
+      //const testUser = testUsers[0]
       const newComment = {
-        text: 'Test new comment',
-        article_id: testArticle.id,
+        name: 'test name',
+        text: 'this is a test text for comments section',
       }
       return supertest(app)
         .post('/api/comments')
-        .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+       // .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
         .send(newComment)
         .expect(201)
         .expect(res => {
           expect(res.body).to.have.property('id')
+          expect(res.body.text).to.eql(newComment.name)
           expect(res.body.text).to.eql(newComment.text)
-          expect(res.body.article_id).to.eql(newComment.article_id)
-          expect(res.body.user.id).to.eql(testUser.id)
+         // expect(res.body.article_id).to.eql(newComment.article_id)
+          //expect(res.body.user.id).to.eql(testUser.id)
           expect(res.headers.location).to.eql(`/api/comments/${res.body.id}`)
           const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' })
           const actualDate = new Date(res.body.date_created).toLocaleString()
@@ -67,14 +68,14 @@ describe('Comments Endpoints', function () {
         })
         .expect(res =>
           db
-            .from('blogful_comments')
+            .from('user_comments')
             .select('*')
             .where({ id: res.body.id })
             .first()
             .then(row => {
               expect(row.text).to.eql(newComment.text)
-              expect(row.article_id).to.eql(newComment.article_id)
-              expect(row.user_id).to.eql(testUser.id)
+              expect(row.name).to.eql(newComment.name)
+            //  expect(row.user_id).to.eql(testUser.id)
               const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' })
               const actualDate = new Date(row.date_created).toLocaleString()
               expect(actualDate).to.eql(expectedDate)
@@ -82,14 +83,14 @@ describe('Comments Endpoints', function () {
         )
     })
 
-    const requiredFields = ['text', 'article_id']
+    const requiredFields = ['name', 'text']
 
     requiredFields.forEach(field => {
       const testArticle = testArticles[0]
       const testUser = testUsers[0]
       const newComment = {
-        text: 'Test new comment',
-        article_id: testArticle.id,
+        name: 'Test Name',
+        text: 'test text',
       }
 
       it(`responds with 400 and an error message when the '${field}' is missing`, () => {

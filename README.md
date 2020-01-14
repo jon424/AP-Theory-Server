@@ -5,7 +5,7 @@ A guide for Advanced Placement Music Theory class! Contains Topic Overviews and 
 ###A live link of the project is available here: _____
 
 ###Screenshot
-![Alt text](./Topic/TopicAttachments/ap-theory-screenshot.png?raw=true "AP Theory Homepage")
+![alt text](https://github.com/jon424/new-AP-Theory-Client/blob/5d175110016a56e234ac852d4cf69d35cf076748/src/Topic/TopicAttachments/ap-theory-screenshot.png "AP Theory Homepage")
 
 
 ## Scripts
