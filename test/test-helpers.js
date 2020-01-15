@@ -34,7 +34,7 @@ function makeUsersArray() {
   ]
 }
 
-function makeArticlesArray(users) {
+function makeCommentsArray(users) {
   return [
     {
       id: 1,
@@ -190,34 +190,31 @@ function makeArticlesArray(users) {
 //   }
 // }
 
-function makeArticlesFixtures() {
+function makeCommentsFixtures() {
   const testUsers = makeUsersArray()
-  const testArticles = makeArticlesArray(testUsers)
-  const testComments = makeCommentsArray(testUsers, testArticles)
-  return { testUsers, testArticles, testComments }
+
+  const testComments = makeCommentsArray(testUsers)
+  //const testComments = makeCommentsArray(testUsers, testComments)
+  return { testUsers, testComments }
 }
 
-// function cleanTables(db) {
-//   return db.transaction(trx =>
-//     trx.raw(
-//       `TRUNCATE
-//         blogful_articles,
-//         blogful_users,
-//         blogful_comments
-//       `
-//     )
-//     .then(() =>
-//       Promise.all([
-//         trx.raw(`ALTER SEQUENCE blogful_articles_id_seq minvalue 0 START WITH 1`),
-//         trx.raw(`ALTER SEQUENCE blogful_users_id_seq minvalue 0 START WITH 1`),
-//         trx.raw(`ALTER SEQUENCE blogful_comments_id_seq minvalue 0 START WITH 1`),
-//         trx.raw(`SELECT setval('blogful_articles_id_seq', 0)`),
-//         trx.raw(`SELECT setval('blogful_users_id_seq', 0)`),
-//         trx.raw(`SELECT setval('blogful_comments_id_seq', 0)`),
-//       ])
-//     )
-//   )
-// }
+function cleanTables(db) {
+  return db.transaction(trx =>
+    trx.raw(
+      `TRUNCATE user_comments`
+    )
+    .then(() =>
+      Promise.all([
+        // trx.raw(`ALTER SEQUENCE user_comments_id_seq minvalue 0 START WITH 1`),
+        // trx.raw(`ALTER SEQUENCE blogful_users_id_seq minvalue 0 START WITH 1`),
+        trx.raw(`ALTER SEQUENCE user_comments_id_seq minvalue 0 START WITH 1`),
+        //trx.raw(`SELECT setval('user_articles_id_seq', 0)`),
+        // trx.raw(`SELECT setval('blogful_users_id_seq', 0)`),
+        trx.raw(`SELECT setval('user_comments_id_seq', 0)`),
+      ])
+    )
+  )
+}
 
 // function seedUsers(db, users) {
 //      const preppedUsers = users.map(user => ({
@@ -234,26 +231,26 @@ function makeArticlesFixtures() {
 //        )
 //    }
 
-// function seedArticlesTables(db, users, articles, comments=[]) {
-//   // use a transaction to group the queries and auto rollback on any failure
-//   return db.transaction(async trx => {
-//     await seedUsers(trx, users)
-//     await trx.into('blogful_articles').insert(articles)
-//     // update the auto sequence to match the forced id values
-//     await trx.raw(
-//       `SELECT setval('blogful_articles_id_seq', ?)`,
-//       [articles[articles.length - 1].id ],
-//     )
-//     // only insert comments if there are some, also update the sequence counter
-//     if (comments.length) {
-//       await trx.into('blogful_comments').insert(comments)
-//       await trx.raw(
-//         `SELECT setval('blogful_comments_id_seq', ?)`,
-//         [comments[comments.length - 1].id],
-//       )
-//     }
-//   })
-// }
+function seedCommentsTables(db, users, comments) {
+  // use a transaction to group the queries and auto rollback on any failure
+  return db.transaction(async trx => {
+    // await seedUsers(trx, users)
+    await trx.into('user_comments').insert(comments)
+    // update the auto sequence to match the forced id values
+    await trx.raw(
+      `SELECT setval('user_comments_id_seq', ?)`,
+      [comments[comments.length - 1].id ],
+    )
+    // only insert comments if there are some, also update the sequence counter
+    if (comments.length) {
+      await trx.into('user_comments').insert(comments)
+      await trx.raw(
+        `SELECT setval('user_comments_id_seq', ?)`,
+        [comments[comments.length - 1].id],
+      )
+    }
+  })
+}
 
 // function seedMaliciousArticle(db, user, article) {
 //   return seedUsers(db, [user])
@@ -275,15 +272,15 @@ function makeArticlesFixtures() {
 
 module.exports = {
   makeUsersArray,
-  makeArticlesArray
+  makeCommentsArray,
   // makeExpectedArticle,
   // makeExpectedArticleComments,
   // makeMaliciousArticle,
   // makeCommentsArray,
 
-  // makeArticlesFixtures,
-  // cleanTables,
-  //seedArticlesTables,
+   makeCommentsFixtures,
+   cleanTables,
+  seedCommentsTables
   // seedMaliciousArticle,
   // makeAuthHeader,
   // seedUsers,
