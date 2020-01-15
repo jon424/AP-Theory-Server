@@ -12,7 +12,7 @@ A guide for Advanced Placement Music Theory class! Contains Topic Overviews and 
 
 Users may enter comments on the various Topics pages. Only Admin may update/delete comments from database. 
 
-POST /api/comments will yield:
+POST api/comments/pitch will yield:
 
 [
 {
