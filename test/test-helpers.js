@@ -231,26 +231,26 @@ function cleanTables(db) {
 //        )
 //    }
 
-function seedCommentsTables(db, users, comments) {
-  // use a transaction to group the queries and auto rollback on any failure
-  return db.transaction(async trx => {
-    // await seedUsers(trx, users)
-    await trx.into('user_comments').insert(comments)
-    // update the auto sequence to match the forced id values
-    await trx.raw(
-      `SELECT setval('user_comments_id_seq', ?)`,
-      [comments[comments.length - 1].id ],
-    )
-    // only insert comments if there are some, also update the sequence counter
-    if (comments.length) {
-      await trx.into('user_comments').insert(comments)
-      await trx.raw(
-        `SELECT setval('user_comments_id_seq', ?)`,
-        [comments[comments.length - 1].id],
-      )
-    }
-  })
-}
+// function seedCommentsTables(db, users, comments) {
+//   // use a transaction to group the queries and auto rollback on any failure
+//   return db.transaction(async trx => {
+//     // await seedUsers(trx, users)
+//     await trx.into('user_comments').insert(comments)
+//     // update the auto sequence to match the forced id values
+//     await trx.raw(
+//       `SELECT setval('user_comments_id_seq', ?)`,
+//       [comments[comments.length - 1].id ],
+//     )
+//     // only insert comments if there are some, also update the sequence counter
+//     if (comments.length) {
+//       await trx.into('user_comments').insert(comments)
+//       await trx.raw(
+//         `SELECT setval('user_comments_id_seq', ?)`,
+//         [comments[comments.length - 1].id],
+//       )
+//     }
+//   })
+// }
 
 // function seedMaliciousArticle(db, user, article) {
 //   return seedUsers(db, [user])
@@ -279,8 +279,8 @@ module.exports = {
   // makeCommentsArray,
 
    makeCommentsFixtures,
-   cleanTables,
-  seedCommentsTables
+   cleanTables
+  //seedCommentsTables
   // seedMaliciousArticle,
   // makeAuthHeader,
   // seedUsers,
