@@ -3,6 +3,8 @@ const app = require('../src/app')
 const helpers = require('./test-helpers')
 const chai = require('chai')
 const chaiHttp = require('chai-http')
+require('dotenv').config();
+
 
 chai.use(chaiHttp)
 
@@ -15,9 +17,10 @@ describe('Comments Endpoints', function () {
   } = helpers.makeCommentsFixtures()
 
   before('make knex instance', () => {
+    console.log(process.env.DB_URL_TEST)
     db = knex({
       client: 'pg',
-      connection: process.env.DB_URL_TEST, //process.env.TEST_DB_URL,
+      connection: process.env.DB_URL_TEST //process.env.TEST_DB_URL,
     })
     app.set('db', db)
   })
@@ -30,13 +33,11 @@ describe('Comments Endpoints', function () {
 
   describe(`POST /api/comments`, () => {
     beforeEach('insert comments', () =>
-     // helpers.seedCommentsTables(
-        db,
+      // helpers.seedCommentsTables(
+      db,
       // testUsers,
-        testComments
-      )
-    
-
+      testComments
+    )
     // it(`responds 401 'Unauthorized request' when invalid password`, () => {
     //   const userInvalidPass = { user_name: testUsers[0].user_name, password: 'wrong' }
     //   return supertest(app)
@@ -46,16 +47,99 @@ describe('Comments Endpoints', function () {
     // })
 
 
-    it('inserts a new test comment', function(done) {
-      chai.request('http://localhost:8000')
-      .post('/comments')
-      .send({name: 'Jon', comment: 'this is a test comment.'})
-      .end(function (err, res) {
-        //expect(err).to.be.null;
-       // expect(res).to.have.status(200);
-        done();
-     });
+    it('inserts a new test comment', function (done) {
+      chai.request(app)
+        .post('/comments')
+        .send({ name: 'NameTest', text: 'Testing the user comments api', topic: 'pitch', parent_comment_id: null })
+        .end(function (err, res) {
+          expect(err).to.be.null;
+          expect(res).to.have.status(201);
+          done();
+        });
     })
+  })
+  describe(`GET /api/comments`, () => {
+    beforeEach('insert comments', () =>
+      // helpers.seedCommentsTables(
+      db,
+      // testUsers,
+      testComments
+    )
+    it('GETs comments', function (done) {
+      chai.request(app)
+        .get('/comments')
+
+      .end(function (err, res) {
+      expect(err).to.be.null;
+      expect(res).to.have.status(200);
+      done();
+      })
+    });
+  })
+
+  describe(`GET /api/comments`, () => {
+    beforeEach('insert comments', () =>
+      // helpers.seedCommentsTables(
+      db,
+      // testUsers,
+      testComments
+    )
+    it('GETs comments by topic', function (done) {
+      chai.request(app) //'http://localhost:8000'
+        .get('/comments/:topic')
+
+      //.end(function (err, res) {
+      //expect(err).to.be.null;
+      // expect(res).to.have.status(200);
+      done();
+    });
+  })
+
+
+  describe(`PUT /api/comments/:id`, () => {
+    beforeEach('insert comments', () =>
+      // helpers.seedCommentsTables(
+      db,
+      // testUsers,
+      testComments
+    )
+    it('PUTs in comments by id', function (done) {
+      chai.request(app)
+        .put('/comments/:id')
+        .send({ name: 'Jon', comment: 'this is a test comment.' })
+        .get('/comments/:id')
+
+
+      //.end(function (err, res) {
+      //expect(err).to.be.null;
+      // expect(res).to.have.status(200);
+      done();
+    });
+  })
+
+
+
+  describe(`DELETE /api/comments/:id`, () => {
+    beforeEach('insert comments', () =>
+      // helpers.seedCommentsTables(
+      db,
+      // testUsers,
+      testComments
+    )
+    it('DELETEs comment by id', function (done) {
+      chai.request(app) //'http://localhost:8000'
+        .delete('/comments/1')
+        .end(function (err, res) {
+          expect(err).to.be.null;
+          expect(res).to.have.status(200);
+          done();
+        });
+    })
+
+
+
+
+
 
 
     // it(`creates a comment, responding with 201 and the new comment`, function () {
@@ -107,7 +191,7 @@ describe('Comments Endpoints', function () {
 
     requiredFields.forEach(field => {
       const testComment = testComments[0]
-     // const testUser = testUsers[0]
+      // const testUser = testUsers[0]
       const newComment = {
         name: 'Test Name',
         text: 'test text',

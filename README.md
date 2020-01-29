@@ -10,29 +10,71 @@ A guide for Advanced Placement Music Theory class! Contains Topic Overviews and 
 
 ## Comments endpoint
 
-Users may enter comments on the various Topics pages. Only Admin may update/delete comments from database. 
+Users may enter comments on the various Topics pages. Only Admin may update/delete comments from database. Endpoints do not require authorization. 
 
-POST api/comments/pitch will yield:
-
+`POST api/comments` will yield:
+```json
 [
+  {
+  name: "Jon"
+  text: "asdfasdf"
+  topic: "pitch"
+  parentCommentId: null
+  }
+]
+
+`GET api/comments` will yield:
+```json
+[
+  {
+"id": 15,
+"name": "bob",
+"date": "2020-01-19T01:49:51.318Z",
+"topic": "major-scales-and-key-signatures",
+"parent_comment_id": null,
+"text": "is helen here?"
+},
 {
-"id": 25,
-"name": "Joe",
-"date": "2020-01-10T20:07:41.969Z",
-"topic": "pitch",
-"parent_comment_id": null,
-"text": "New comment."
+"id": 14,
+"name": "Jon",
+"date": "2020-01-17T02:28:35.117Z",
+"topic": "pitch",
+"parent_comment_id": null,
+"text": "asdfasdfa"
+},
+...
+]
+
+`GET api/comments/topic` will yield:
+{
+"id": 14,
+"name": "Jon",
+"date": "2020-01-17T02:28:35.117Z",
+"topic": "pitch",
+"parent_comment_id": null,
+"text": "asdfasdfa"
+},
+{
+"id": 13,
+"name": "Jonathan",
+"date": "2020-01-17T01:40:23.825Z",
+"topic": "pitch",
+"parent_comment_id": null,
+"text": "any comment"
 },
 
+`PUT api/comments/id` will yield:
+
 {
-"id": 24,
-"name": "Samantha",
-"date": "2020-01-10T20:07:32.524Z",
-"topic": "pitch",
-"parent_comment_id": null,
-"text": "Nice content! :-)"
+ "name": "post test ",
+ "topic": "pitch",
+  "parent_comment_id": null,
+  "text": "Testing the user comments api"
 }
-]
+
+`DELETE api/comments/id` will delete comments by id
+
+```
 
 
 ## Scripts
