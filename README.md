@@ -1,14 +1,21 @@
 ## AP Theory
 
-A guide for Advanced Placement Music Theory class! Contains Topic Overviews and graded practice Quizzes to help you succeed on the AP Music Theory Exam. Utilizes React, Express, and PostgreSQL.
+A guide for Advanced Placement Music Theory class! Contains Topic Overviews and graded practice Quizzes to help you succeed on the AP Music Theory Exam. 
 
-### A live link of the project is available here: (https://new-ap-theory-client.now.sh)
+### A live link of the project is available here: (https://ap-theory.now.sh)
+
+## Stack:
+* Client: React
+* Web Server: Node and Express with PostgreSQL 
+* Database: PostgreSQL hosted on Heroku
+* Tests: Supertest, Chai, Jest, Enzyme
+
 
 ### Screenshot
 ![alt text](https://github.com/jon424/new-AP-Theory-Client/blob/5d175110016a56e234ac852d4cf69d35cf076748/src/Topic/TopicAttachments/ap-theory-screenshot.png "AP Theory Homepage")
 
 
-## Comments endpoint
+## Comments Section endpoints
 
 Users may enter comments on the various Topics pages. Only Admin may update/delete comments from database. Endpoints do not require authorization. 
 
@@ -16,15 +23,14 @@ Users may enter comments on the various Topics pages. Only Admin may update/dele
 ```json
 [
   {
-  name: "Jon"
-  text: "asdfasdf"
-  topic: "pitch"
-  parentCommentId: null
+  "name": "Jon",
+  "text": "sample comment"
+  "topic": "pitch",
+  "parent_comment_id": null,
   }
 ]
 
 `GET api/comments` will yield:
-```json
 [
   {
 "id": 15,
@@ -32,7 +38,7 @@ Users may enter comments on the various Topics pages. Only Admin may update/dele
 "date": "2020-01-19T01:49:51.318Z",
 "topic": "major-scales-and-key-signatures",
 "parent_comment_id": null,
-"text": "is helen here?"
+"text": "comment text"
 },
 {
 "id": 14,
