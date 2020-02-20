@@ -2,7 +2,7 @@
 
 A guide for Advanced Placement Music Theory class! Contains Topic Overviews and graded practice Quizzes to help you succeed on the AP Music Theory Exam. 
 
-### A live link of the project is available here: (https://ap-theory.now.sh)
+### A live link to the project is available here: (https://ap-theory.now.sh)
 
 ## Stack:
 * Client: React
@@ -12,7 +12,7 @@ A guide for Advanced Placement Music Theory class! Contains Topic Overviews and 
 
 
 ### Screenshot
-![alt text](https://github.com/jon424/new-AP-Theory-Client/blob/5d175110016a56e234ac852d4cf69d35cf076748/src/Topic/TopicAttachments/ap-theory-screenshot.png "AP Theory Homepage")
+![alt text](./src/cover-photo.jpg "AP Theory Homepage")
 
 
 ## Comments Section endpoints

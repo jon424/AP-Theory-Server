@@ -11,21 +11,7 @@ const { pool } = require('./config');
 const cors = require('cors');
 const {CLIENT_ORIGIN} = require('./config');
 
-// const knex = require('knex');
-// const knexInstance = knex({
-//   client: 'pg',
-//   connection: process.env.DB_URL
-// });
 
-// const q1 = knexInstance('user_comments').select('*').toQuery()
-
-
-// knexInstance.from('user_comments').select('*').then(result => {
-
-// });
-
-
-//setting up winston...
 const logger = winston.createLogger({
   level: 'info',
   format: winston.format.json(),
@@ -39,7 +25,7 @@ if (NODE_ENV !== 'production') {
     format: winston.format.simple()
   }));
 }
-//...end of winston setup
+
 
 const app = express();
 
@@ -58,25 +44,11 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 
-
 app.use(
     cors({
         origin: CLIENT_ORIGIN
     })
 );
-
-//Authorization Middleware
-// app.use(function validateBearerToken(req, res, next) {
-//   const apiToken = process.env.API_TOKEN
-//   const authToken = req.get('Authorization')
-
-//   if (!authToken || authToken.split(' ')[1] !== apiToken) {
-//     logger.error(`Unauthorized request to path: ${req.path}`);
-//     return res.status(401).json({ error: 'Unauthorized request' })
-//   }
-//   // move to the next middleware
-//   next()
-// })
 
 
 //*****API Requests For Comments Section*****/
@@ -157,7 +129,6 @@ app.get('/comments/:topic', getCommentsByTopic)
 app.post('/comments', createComment)
 app.put('/comments/:id', updateComment)
 app.delete('/comments/:id', deleteComment)
-
 //*****END OF API Requests*****/
 
 
